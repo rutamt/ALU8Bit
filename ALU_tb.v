@@ -3,10 +3,14 @@ module ALU_tb;
   reg [7:0] A,B;
   reg [3:0] selection;
   wire [7:0] ALU_out;
-  
+
   ALU uut(.A(A),.B(B),.sel(selection),.result(ALU_out));
   
   initial begin
+    //Allows for waveform viewing
+    $dumpfile("dump.vcd");
+    $dumpvars(0, ALU_tb);
+    
     //Test Addition
     A = 8'b00001111; //15 in decimal; arbitrarily used for testing  
     B = 8'b00000101; //5 in decimal 
@@ -47,47 +51,47 @@ module ALU_tb;
     // Test Bitwise OR
     selection = 4'b1000;
     #10;
-    $display("Bitwise OR: %b | %b = %b", A, B, ALU_out);
+    $display("Bitwise OR: %b | %b = %b", A, B, ALU_out); //Should result in A
 
     // Test Bitwise AND
     selection = 4'b1001;
     #10;
-    $display("Bitwise AND: %b & %b = %b", A, B, ALU_out);
+    $display("Bitwise AND: %b & %b = %b", A, B, ALU_out); //Should result in B
 
     // Test Bitwise NOT
     selection = 4'b1010;
     #10;
-    $display("Bitwise NOT: ~%b = %b", A, ALU_out);
+    $display("Bitwise NOT: ~%b = %b", A, ALU_out); //Should result in ~A
 
     // Test Bitwise XOR
     selection = 4'b1011;
     #10;
-    $display("Bitwise XOR: %b ^ %b = %b", A, B, ALU_out);
+    $display("Bitwise XOR: %b ^ %b = %b", A, B, ALU_out); //Should result in A ^ B 
 
     // Test Bitwise NOR
     selection = 4'b1100;
     #10;
-    $display("Bitwise NOR: ~(%b | %b) = %b", A, B, ALU_out);
+    $display("Bitwise NOR: ~(%b | %b) = %b", A, B, ALU_out); //Should result in ~(A | B)
 
     // Test Bitwise NAND
     selection = 4'b1101;
     #10;
-    $display("Bitwise NAND: ~(%b & %b) = %b", A, B, ALU_out);
+    $display("Bitwise NAND: ~(%b & %b) = %b", A, B, ALU_out); //Should result in ~(A & B)
 
     // Test Bitwise XNOR
     selection = 4'b1110;
     #10;
-    $display("Bitwise XNOR: ~(%b ^ %b) = %b", A, B, ALU_out);
+    $display("Bitwise XNOR: ~(%b ^ %b) = %b", A, B, ALU_out); //Should result in ~(A ^ B)
 
     // Test Preset (Force All High)
     selection = 4'b1111;
     #10;
-    $display("Preset: Output = %b", ALU_out);
+    $display("Preset: Output = %b", ALU_out); //Should result in 11111111
 
     // Test Default / Catch-all (Testing an unused state)
     selection = 4'bxxxx; 
     #10;
-    $display("Default Case: Output = %b", ALU_out);
+    $display("Default Case: Output = %b", ALU_out); //Should result in xxxxxxxx
 
     // End simulation
     $finish;
